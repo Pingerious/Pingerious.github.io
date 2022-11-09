@@ -3,8 +3,8 @@
 class Database {
   private $server_name = "localhost";
   private $db_username = "root";
-  private $db_password = "root";
-  private $db_name = "study_management_program";
+  private $db_password = "";
+  private $db_name = "student_management_program";
 
   protected $conn;
 

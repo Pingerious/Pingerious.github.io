@@ -21,15 +21,14 @@ class Subject extends Database{
     }
   }
 
-  function getStudyRecords() {
-    $sql = 
-    "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, TIMEDIFF(r.clock_out,r.clock_in), r.note FROM record r
-    INNER JOIN subjects s
-    ON r.subject_id = s.subject_id
-    INNER JOIN users u
-    ON r.user_id = u.user_id;
-    WHERE u.user_id = 1
-    ";
+  function getUser() {
+    $sql = "SELECT user_id from users LIMIT 1";
+    $result = $this -> conn -> query($sql);
+    return $result;
+  }
+
+  function getStudyRecords($user_id) {
+    $sql = "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, total, r.note FROM record r INNER JOIN subjects s ON r.subject_id = s.subject_id INNER JOIN users u ON r.user_id = u.user_id WHERE u.user_id = $user_id";
   
     if($result = $this->conn->query($sql))
     {

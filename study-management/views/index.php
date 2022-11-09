@@ -35,7 +35,7 @@ include_once "../classes/user.php";
             </div>
         </div>
     </main>
-    <?php include "footer.php"; ?>
+    <?php include "../footer.php"; ?>
 </body>
 
 </html>

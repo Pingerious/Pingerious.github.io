@@ -3,6 +3,7 @@ session_start();
 include '../classes/subject.php';
 
 $subject = new Subject; 
+
 ?>
 
 <!DOCTYPE html>
@@ -42,11 +43,13 @@ $subject = new Subject;
           </select>
         </form>  
       </div>
-      <div class="card-footer">  
-          <a href="study-record.php?id=" class="btn btn-success w-50 d-block mx-auto fw-bold p-2" name="submit">Go!</a>
 
-      </div>
+        <div class="card-footer">  
+          <!--use the session variable found in user's class (login). this is to get the record of the student base on their user_id -->
+          <a href="study-record.php?id=<?="$_SESSION[user_id]"?>" class="btn btn-success w-50 d-block mx-auto fw-bold p-2" name="submit">Go!</a>
+        </div>
 
+   
       <?php
       if(isset($_POST['submit'])){
         $this->getSubject();
