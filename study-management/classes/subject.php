@@ -23,10 +23,40 @@ class Subject extends Database{
     }
     
   }
+  function updateTimestampIn($stamp_in,$id) {
+    $sql = "UPDATE `record` SET clock_in = '$stamp_in' WHERE `record_id` = $id";
+
+    if($result = $this->conn->query($sql)) {
+      return $result;
+      
+    }
+    else {
+      die("Something went wrong ".$this->conn->error);
+    }
+}
+
+  function updateTimestampOut($stamp_out,$id) {
+    $sql = "UPDATE `record` SET clock_out = '$stamp_out' WHERE `record_id` = $id";
+
+    if($result = $this->conn->query($sql)) {
+      return $result;
+      
+    }
+    else {
+      die("Something went wrong ".$this->conn->error);
+    }
+  }
+
+  function getTotalTime($id,$stamp_out, $stamp_in) {
+    $sql = "UPDATE `record` SET total = TIMEDIFF(clock_out,clock_in) WHERE `record_id` =$id";
+
+    $result = $this->conn->query($sql);
+    return $result;
+  }
 
 
   function getStudyRecords($user_id) {
-    $sql = "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, total, r.note FROM record r INNER JOIN subjects s ON r.subject_id = s.subject_id INNER JOIN users u ON r.user_id = u.user_id WHERE u.user_id = $user_id";
+    $sql = "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, total, r.note,r.record_id FROM record r INNER JOIN subjects s ON r.subject_id = s.subject_id INNER JOIN users u ON r.user_id = u.user_id WHERE u.user_id = $user_id";
   
     if($result = $this->conn->query($sql)) {
       if ($result -> num_rows > 0) {
@@ -34,7 +64,7 @@ class Subject extends Database{
       }
     }
     else {
-      echo $this->error;
+      echo "<p class='text-danger fw-bold text-center'>No records Found!</p>";
     }
   }
 }

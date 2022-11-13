@@ -84,18 +84,18 @@ $get_record = $subject->getStudyRecords($user_id);
                     <td><?php echo $row['total']; ?></td>
                     <td><?php echo $row['note']; ?></td>
                     <td>
-                      <a href="functions/clock-in.php" name ="clock_in" class="btn btn-light"><i class="bi bi-stopwatch"></i> Clock In</a>
+                      <a href="../actions/update_timeStampIn.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-success"><i class="bi bi-stopwatch"></i> Clock In</a>
                     </td>
                     
                     <td>
-                      <button type="button" class="btn btn-danger"><i class="bi bi-stopwatch"></i>Clock Out</button>
+                    <a href="../actions/update_timeStampOut.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-danger"><i class="bi bi-stopwatch"></i> Clock Out</a>
                     </td>
                     <td>
                       <button type="button" class="btn btn-warning"><i class="bi bi-pencil-square"></i>Note Updated</button>
                     </td>
                   </tr>
                   <?php
-                   }
+                   } 
                   ?>
                 </tbody>  
               </table>
