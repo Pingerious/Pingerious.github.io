@@ -33,7 +33,7 @@ $subject = new Subject;
         $subject_options = $subject->displayAllSubjects();
         if($subject_options && $subject_options->num_rows > 0){
           while($option = $subject_options->fetch_assoc()){
-           echo "<option value ='../actions/insert_subject.php?id=".$option['subject_id']."'>".$option['subject_name']."</option>";
+           echo "<option value ='../actions/insert_subject.php?subject_id=".$option['subject_id']."'>".$option['subject_name']."</option>";
           }
           
         } else{
