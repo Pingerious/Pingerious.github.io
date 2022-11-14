@@ -32,10 +32,10 @@ $get_record = $subject->getStudyRecords($user_id);
     </a>
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a href="study-record.php" class="nav-link text-white">My Study Record</a>
+            <a href="../views/past-record.php" class="nav-link text-white">Past Record</a>
         </li>
         <li class="nav-item">
-            <a href="add-post-by-user.php" class="nav-link text-white">Add Record</a>
+            <a href="../views/subjects.php" class="nav-link text-white">Study Another Subject</a>
         </li>
     </ul>
     <ul class="navbar-nav ms-auto">
@@ -52,96 +52,84 @@ $get_record = $subject->getStudyRecords($user_id);
     </div>
 </header>
 <body>
-    <div class="row ms-5 mt-5">
-      <div class="col-9">
-        <div class="card">
-          <div class="card-header">
-             <h1 class="h3"><?=date("Y-m-d")?></h1>
-          </div>
-           <div class="card-body">
-              <table class="col-12">
-                <thead>
-                  <tr>
-                    <th>Subject ID</th>
-                    <th>Subject Names</th>
-                    <th>Time In</th>
-                    <th>Time Out</th>
-                    <th>Total Study Hours</th>
-                    <th>Notes</th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                </thead>  
-                <tbody>
-                  <?php 
-                  while($row = $get_record->fetch_assoc()){ ?>
-                  
-                  <tr>
-                    <td><?php echo $row['subject_id']; ?></td>
-                    <td><?php echo $row['subject_name']; ?></td>
-                    <td><?php echo $row['clock_in']; ?></td>
-                    <td><?php echo $row['clock_out']; ?></td>
-                    <td><?php echo $row['total']; ?></td>
-                    <td><?php echo $row['note']; ?></td>
-                    <td>
-                      <a href="../actions/update_timeStampIn.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-success"><i class="bi bi-stopwatch"></i> Clock In</a>
-                    </td>
-                    
-                    <td>
-                    <a href="../actions/update_timeStampOut.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-danger"><i class="bi bi-stopwatch"></i> Clock Out</a>
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-warning"><i class="bi bi-pencil-square"></i>Note Updated</button>
-                    </td>
-                  </tr>
-                  <?php
-                   } 
-                  ?>
-                </tbody>  
-              </table>
-           </div>  
-        </div>  
-      </div>
-      <div class="ms-5 col-2">
-        <div class="card">
-          <div class="card-header">
-            <h1 class="h3 text-center">Current Time</h1>
-          </div>
-          <div class="card-body fw-bold text-center h5">
+ <div class="row">
+   <div class="ms-5 mt-3 col-3">
+     <div class="card">
+       <div class="card-header">
+         <h1 class="h3 text-center">Current Time</h1>
+       </div>
+       <div class="card-body fw-bold text-center h5">
           <?php date_default_timezone_set ('Asia/Tokyo');
             echo date('Y-m-d')."<br/>\n";
             echo date('H:i:s')."<br/>\n";
-            ?>
-          </div>
-        </div>
-        <div class="card mt-3">
-          <div class="card-header">
-            <h1 class="h4 text-center">Total<br> Study Hours</h1>
-          </div>
-          <div class="card-body fw-bold text-center h3">
-  
-          </div>
-        </div>
-        <div class="card mt-3">
-          <div class="card-header">
-            <h1 class="h4 text-center">Most studied</h1>
-          </div>
-          <div class="card-body fw-bold text-center h3">
-  
-          </div>
-        </div>
-        <div class="card mt-3">
-          <div class="card-header">
-            <h1 class="h4 text-center">Least studied</h1>
-          </div>
-          <div class="card-body fw-bold text-center h3">
-  
-          </div>
-        </div>
+          ?>
+       </div>
+     </div>
+   </div>
+   <div class="col-3">
+     <div class="card mt-3">
+       <div class="card-header">
+         <h1 class="h4 text-center">Today's Effort
+       </div>
+       <div class="card-body fw-bold text-center h3">
 
+       </div>
+     </div>
+   </div>
 
+  </div>
+</div> 
+
+  <div class="row ms-3 mt-3 me-3">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+            <h1 class="h3"><?=date("Y-m-d")?></h1>
         </div>
-      </div>
+          <div class="card-body">
+            <table class="col-12">
+              <thead>
+                <tr>
+                  <th>Subject ID</th>
+                  <th>Subject Names</th>
+                  <th>Time In</th>
+                  <th>Time Out</th>
+                  <th>Total Study Hours</th>
+                  <th>Notes</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>  
+              <tbody>
+                <?php 
+                while($row = $get_record->fetch_assoc()){ ?>
+                
+                <tr>
+                  <td><?php echo $row['subject_id']; ?></td>
+                  <td><?php echo $row['subject_name']; ?></td>
+                  <td><?php echo $row['clock_in']; ?></td>
+                  <td><?php echo $row['clock_out']; ?></td>
+                  <td><?php echo $row['total']; ?></td>
+                  <td><?php echo $row['note']; ?></td>
+                  <td>
+                    <a href="../actions/update_timeStampIn.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-success"><i class="bi bi-stopwatch"></i> Clock In</a>
+                  </td>
+                  
+                  <td>
+                  <a href="../actions/update_timeStampOut.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-danger"><i class="bi bi-stopwatch"></i> Clock Out</a>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-warning"><i class="bi bi-pencil-square"></i>Note Updated</button>
+                  </td>
+                </tr>
+                <?php
+                  } 
+                ?>
+              </tbody>  
+            </table>
+          </div>  
+      </div>  
+    </div>
   </div>
 </div>
 
