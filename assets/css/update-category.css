@@ -1,0 +1,9 @@
+.form-control {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black !important;
+    border-radius: 0;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
