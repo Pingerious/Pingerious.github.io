@@ -2,8 +2,6 @@
 
 session_start();
 
-
-
 ?>
 
 
@@ -26,7 +24,7 @@ session_start();
     </a>
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a href="study-record.php" class="nav-link text-white">My Study Record</a>
+            <a href="../views/study-record.php" class="nav-link text-white">My Study Record</a>
         </li>
         <li class="nav-item">
             <a href="../views/subjects.php" class="nav-link text-white">Study Another Subject</a>

@@ -55,6 +55,7 @@ class Subject extends Database{
   }
 
 
+
   function getStudyRecords($user_id) {
     $sql = "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, total, r.note,r.record_id FROM record r INNER JOIN subjects s ON r.subject_id = s.subject_id INNER JOIN users u ON r.user_id = u.user_id WHERE u.user_id = $user_id";
   

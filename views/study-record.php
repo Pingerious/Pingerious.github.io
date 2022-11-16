@@ -4,12 +4,9 @@ include_once "../classes/subject.php";
 date_default_timezone_set('Asia/Tokyo');
 
 $subject = new Subject;
- $user_id = $_GET['id'];
-// $subject_list = $subject->getSubject($record_id);
+$user_id = $_GET['id'];
 $get_record = $subject->getStudyRecords($user_id);
 
-
-// include 'clock_in.php';
 
 ?>
 
@@ -27,7 +24,7 @@ $get_record = $subject->getStudyRecords($user_id);
 <body>
 <header>  
   <nav class="navbar navbar-expand bg-danger navbar-dark px-5">
-    <a href="profile.php" class="navbar-brand">
+    <a href="../views/study-record.php" class="navbar-brand">
         <h1 class="h3">Study Management</h1>
     </a>
     <ul class="navbar-nav">
@@ -72,7 +69,7 @@ $get_record = $subject->getStudyRecords($user_id);
          <h1 class="h4 text-center">Today's Effort
        </div>
        <div class="card-body fw-bold text-center h3">
-
+          
        </div>
      </div>
    </div>
