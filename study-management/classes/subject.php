@@ -88,6 +88,7 @@ class Subject extends Database{
         echo $msg;
       }
     }
+
     return $result;
   }
 
