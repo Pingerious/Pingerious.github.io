@@ -92,6 +92,36 @@ class Subject extends Database{
     return $result;
   }
 
+  function displayMostStudied($user_id) {
+
+    $sql = " SELECT record.subject_id, subjects.subject_name, SEC_TO_TIME(sum(record.total)) as TOTAL FROM record JOIN
+            (SELECT subject_id, ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC) seq
+            FROM record
+            GROUP BY record.subject_id) value_occurence
+            ON record.subject_id= value_occurence.subject_id
+            JOIN subjects
+            ON record.subject_id = subjects.subject_id
+            WHERE value_occurence.seq = 1 and record.user_id = $user_id LIMIT 1";
+    $result = $this->conn->query($sql);
+    return $result;
+
+  }
+
+  function displayLeastStudied($user_id) {
+    $sql = "SELECT subjects.subject_name,record.subject_id, COUNT(record.subject_id) AS value_occurrence, SEC_TO_TIME(sum(record.total)) as TOTAL FROM record 
+            JOIN subjects  
+            ON record.subject_id = subjects.subject_id
+            GROUP BY record.subject_id
+            HAVING COUNT(value_occurrence) <= ALL(
+            SELECT COUNT(record.subject_id)
+            FROM record
+            WHERE record.user_id = $user_id
+            GROUP BY record.subject_id
+          );";
+    $result = $this->conn->query($sql);
+    return $result;
+  }
+
 
   function getStudyRecords($user_id) {
     $sql = "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, total, r.note,r.record_id FROM record r INNER JOIN subjects s ON r.subject_id = s.subject_id INNER JOIN users u ON r.user_id = u.user_id WHERE u.user_id = $user_id";

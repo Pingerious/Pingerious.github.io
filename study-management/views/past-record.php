@@ -152,9 +152,19 @@ $subject = new Subject;
         <div class="row">
           <div class="col-6">
             <p>subject</p>
+            <?php $most_hours_studied = $subject->displayMostStudied($user_id); 
+                  while($row = $most_hours_studied->fetch_assoc()) {
+                    echo $row['subject_name'];
+                  }
+            ?>
           </div>
           <div class="col-6">
             <p>hours</p>
+            <?php $most_hours_studied = $subject->displayMostStudied($user_id); 
+                  while($row = $most_hours_studied->fetch_assoc()) {
+                    echo $row['TOTAL'];
+                  }
+            ?>
           </div>
         </div>
       </div>
@@ -167,9 +177,19 @@ $subject = new Subject;
         <div class="row">
           <div class="col-6">
             <p>subject</p>
+            <?php $least_hours_studied = $subject->displayLeastStudied($user_id); 
+                  while($row = $least_hours_studied->fetch_assoc()) {
+                    echo "<p class='d-block'>".$row['subject_name']."</p>";
+                  }
+            ?>
           </div>
           <div class="col-6">
             <p>hours</p>
+            <?php $least_hours_studied = $subject->displayLeastStudied($user_id); 
+                  while($row = $least_hours_studied->fetch_assoc()) {
+                    echo "<p class='d-block'>".$row['TOTAL']."</p>";
+                  }
+            ?>
           </div>
         </div>
       </div>
