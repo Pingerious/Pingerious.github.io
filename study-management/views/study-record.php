@@ -32,7 +32,7 @@ $get_record = $subject->getStudyRecords($user_id);
     </a>
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a href="study-record.php" class="nav-link text-white">My Study Record</a>
+            <a href="past-record.php?id=<?=$user_id?>" class="nav-link text-white">My Study Record</a>
         </li>
         <li class="nav-item">
             <a href="add-post-by-user.php" class="nav-link text-white">Add Record</a>

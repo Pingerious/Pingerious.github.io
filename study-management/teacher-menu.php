@@ -1,3 +1,5 @@
+
+
 <nav class="navbar navbar-expand-md bg-dark navbar-dark px-5">
     <a href="dashboard.php" class="navbar-brand">
         <h1 class="h3">Study Management for Teachers</h1>
