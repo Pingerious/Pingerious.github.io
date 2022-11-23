@@ -1,10 +1,12 @@
 <?php
 session_start();
-include "../classes/subject.php";
+include_once "../classes/subject.php";
 date_default_timezone_set('Asia/Tokyo');
 
 $subject = new Subject;
+ $user_id = $_GET['id'];
 // $subject_list = $subject->getSubject($record_id);
+$get_record = $subject->getStudyRecords($user_id);
 
 
 // include 'clock_in.php';
@@ -30,7 +32,7 @@ $subject = new Subject;
     </a>
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a href="study-record.php" class="nav-link text-white">My Study Record</a>
+            <a href="past-record.php?id=<?=$user_id?>" class="nav-link text-white">My Study Record</a>
         </li>
         <li class="nav-item">
             <a href="add-post-by-user.php" class="nav-link text-white">Add Record</a>
@@ -65,35 +67,35 @@ $subject = new Subject;
                     <th>Time In</th>
                     <th>Time Out</th>
                     <th>Total Study Hours</th>
-                    <th></th>
-                    <th></th>
                     <th>Notes</th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>  
                 <tbody>
                   <?php 
-                  $get_record = $subject->getStudyRecords();
-                  while($subject_details = $get_record->fetch_assoc()){ ?>
+                  while($row = $get_record->fetch_assoc()){ ?>
                   
                   <tr>
-                    <td><?php echo $subject_details['subject_id']; ?></td>
-                    <td><?= $subject_details['subject_name']?></td>
-                    <td><?= $subject_details['clock_in']?></td>
-                    <td><?= $subject_details['clock_out']?></td>
-                    <td><?= $subject_details['note']?></td>
+                    <td><?php echo $row['subject_id']; ?></td>
+                    <td><?php echo $row['subject_name']; ?></td>
+                    <td><?php echo $row['clock_in']; ?></td>
+                    <td><?php echo $row['clock_out']; ?></td>
+                    <td><?php echo $row['total']; ?></td>
+                    <td><?php echo $row['note']; ?></td>
                     <td>
-                      <a href="functions/clock-in.php" name ="clock_in" class="btn btn-light"><i class="bi bi-stopwatch"></i> Clock In</a>
+                      <a href="../actions/update_timeStampIn.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-success"><i class="bi bi-stopwatch"></i> Clock In</a>
                     </td>
                     
                     <td>
-                      <button type="button" class="btn btn-danger"><i class="bi bi-stopwatch"></i>Clock Out</button>
+                    <a href="../actions/update_timeStampOut.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-danger"><i class="bi bi-stopwatch"></i> Clock Out</a>
                     </td>
                     <td>
                       <button type="button" class="btn btn-warning"><i class="bi bi-pencil-square"></i>Note Updated</button>
                     </td>
                   </tr>
                   <?php
-                   }
+                   } 
                   ?>
                 </tbody>  
               </table>

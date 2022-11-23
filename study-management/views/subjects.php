@@ -3,6 +3,7 @@ session_start();
 include '../classes/subject.php';
 
 $subject = new Subject; 
+
 ?>
 
 <!DOCTYPE html>
@@ -27,13 +28,14 @@ $subject = new Subject;
         <h4 class="text-center text-danger"> What subject are you going to study today? </h4>
         <hr>
         <form action="../actions/" method="post">
-          <select name="subject" class="d-block mx-auto form-select-lg form-select-box-shadow form-control">
+          <select name="subject" class="d-block mx-auto form-select-lg form-select-box-shadow form-control" onchange="location=this.value;">
         <?php
         $subject_options = $subject->displayAllSubjects();
         if($subject_options && $subject_options->num_rows > 0){
           while($option = $subject_options->fetch_assoc()){
-           echo "<option value ='".$option['subject_id']."'>".$option['subject_name']."</option>";
+           echo "<option value ='../actions/insert_subject.php?subject_id=".$option['subject_id']."'>".$option['subject_name']."</option>";
           }
+          
         } else{
           echo "<option> No Subjects to display </option>";
 
@@ -42,11 +44,13 @@ $subject = new Subject;
           </select>
         </form>  
       </div>
-      <div class="card-footer">  
-          <a href="study-record.php?id=" class="btn btn-success w-50 d-block mx-auto fw-bold p-2" name="submit">Go!</a>
 
-      </div>
+        <div class="card-footer ">  
+          <!--use the session variable found in user's class (login). this is to get the record of the student base on their user_id -->
+          <a href="study-record.php?id=<?="$_SESSION[user_id]"?>" class="btn btn-success d-inline-block w-100 fw-bold mx-2 p-2 " name="submit">Go!</a>
+        </div>
 
+   
       <?php
       if(isset($_POST['submit'])){
         $this->getSubject();

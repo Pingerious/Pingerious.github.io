@@ -8,7 +8,7 @@ class User extends Database{
     $sql= "INSERT INTO users (`first_name`, `last_name`, `username`, `password`, `avatar`, `grade`) VALUES ('$first_name', '$last_name','$username','$password','$avatar','$grade')";
 
     if($this->conn->query($sql)){
-            header("location: ../views/index.php");//ここは？
+            header("location: ../views/index.php"); //ここは？
             exit;
         }else{
             // die("Error inserting to account table: " . $conn->error);
