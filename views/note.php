@@ -1,12 +1,6 @@
 <?php
 session_start();
-include 'functions/category-functions.php';
 
-$cat_details = getCategory($_GET['cat_id']);
-
-if(isset($_POST['update'])){
-    updateCategory($_GET['cat_id']);
-} 
 ?>
 
 <!DOCTYPE html>
@@ -24,12 +18,12 @@ if(isset($_POST['update'])){
 </head>
 
 <body>
-    <header>
-        <?php include 'admin-menu.php';?>
+     <header> 
+        <?php include 'admin-menu.php';?> 
         <div class="container-fluid bg-success bg-gradient text-white p-4 ps-5">
-            <h2 class="display-2"><i class="fas fa-folder me-3"></i>Category</h2>
+            <h2 class="display-2"><i class="fas fa-folder me-3"></i>Note</h2>
         </div>
-    </header>
+    </header> 
 
     <main class="container">
         <div class="w-25 mx-auto">

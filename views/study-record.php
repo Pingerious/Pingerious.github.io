@@ -5,7 +5,10 @@ date_default_timezone_set('Asia/Tokyo');
 
 $subject = new Subject;
 $user_id = $_GET['id'];
-$get_record = $subject->getStudyRecords($user_id);
+$date_today = date("Y-m-d");
+$get_record = $subject->getStudyRecords($user_id,$date_today);
+$total_hours = $subject->getTodayTotal($user_id);
+// print_r($total_hours);
 
 
 ?>
@@ -23,27 +26,9 @@ $get_record = $subject->getStudyRecords($user_id);
 </head>
 <body>
 <header>  
-  <nav class="navbar navbar-expand bg-danger navbar-dark px-5">
-    <a href="../views/study-record.php" class="navbar-brand">
-        <h1 class="h3">Study Management</h1>
-    </a>
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a href="../views/past-record.php" class="nav-link text-white">Past Record</a>
-        </li>
-        <li class="nav-item">
-            <a href="../views/subjects.php" class="nav-link text-white">Study Another Subject</a>
-        </li>
-    </ul>
-    <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-            <a href="profile.php" class="nav-link text-white"><i class="me-1 fas fa-user text-white mr-1"></i>Welcome <?= $_SESSION['full_name']; ?></a>
-        </li>
-        <li class="nav-item">
-            <a href="logout.php" class="nav-link text-white" ><i class="me-1 fas fa-user"></i>Logout</a>
-        </li>
-    </ul>
-  </nav>
+ <?php
+  include '../views/navbar.php';
+  ?>
     <div class="container-fluid bg-primary bg-gradient text-white p-4 ps-5">
         <h2 class="display-2 ms-2"><i class="bi bi-pencil"></i>  Study Record</h2>        
     </div>
@@ -56,7 +41,7 @@ $get_record = $subject->getStudyRecords($user_id);
          <h1 class="h3 text-center">Current Time</h1>
        </div>
        <div class="card-body fw-bold text-center h5">
-          <?php date_default_timezone_set ('Asia/Tokyo');
+          <?= date_default_timezone_set ('Asia/Tokyo');
             echo date('Y-m-d')."<br/>\n";
             echo date('H:i:s')."<br/>\n";
           ?>
@@ -66,10 +51,10 @@ $get_record = $subject->getStudyRecords($user_id);
    <div class="col-3">
      <div class="card mt-3">
        <div class="card-header">
-         <h1 class="h4 text-center">Today's Effort
+         <h1 class="h4 text-center">Today's Effort</h1>
        </div>
        <div class="card-body fw-bold text-center h3">
-          
+       <?= gmdate('H \h i \m s \s', $total_hours['total']); ?>
        </div>
      </div>
    </div>
@@ -92,31 +77,29 @@ $get_record = $subject->getStudyRecords($user_id);
                   <th>Time In</th>
                   <th>Time Out</th>
                   <th>Total Study Hours</th>
-                  <th>Notes</th>
-                  <th></th>
-                  <th></th>
+                  <th>Clock In</th>
+                  <th>Clock Out</th>
                 </tr>
               </thead>  
               <tbody>
+                <tr>
+                  <td><?php echo date("Y-m-d");?></td>
+                </tr>
                 <?php 
                 while($row = $get_record->fetch_assoc()){ ?>
                 
                 <tr>
-                  <td><?php echo $row['subject_id']; ?></td>
-                  <td><?php echo $row['subject_name']; ?></td>
-                  <td><?php echo $row['clock_in']; ?></td>
-                  <td><?php echo $row['clock_out']; ?></td>
-                  <td><?php echo $row['total']; ?></td>
-                  <td><?php echo $row['note']; ?></td>
+                  <td><?= $row['subject_id']; ?></td>
+                  <td><?= $row['subject_name']; ?></td>
+                  <td><?= $row['clock_in']; ?></td>
+                  <td><?= $row['clock_out']; ?></td>
+                  <td><?= gmdate('H \h i \m s \s', $row['total']); ?></td> 
                   <td>
-                    <a href="../actions/update_timeStampIn.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-success"><i class="bi bi-stopwatch"></i> Clock In</a>
+                    <a href="../actions/update_timeStampIn.php?id=<?= $row['record_id'];?>" name ="clock_in" class="btn btn-success"><i class="bi bi-stopwatch"></i> Clock In</a>
                   </td>
                   
                   <td>
-                  <a href="../actions/update_timeStampOut.php?id=<?php echo $row['record_id'];?>" name ="clock_in" class="btn btn-danger"><i class="bi bi-stopwatch"></i> Clock Out</a>
-                  </td>
-                  <td>
-                    <button type="button" class="btn btn-warning"><i class="bi bi-pencil-square"></i>Note Updated</button>
+                  <a href="../actions/update_timeStampOut.php?id=<?= $row['record_id'];?>" name ="clock_in" class="btn btn-danger"><i class="bi bi-stopwatch"></i> Clock Out</a>
                   </td>
                 </tr>
                 <?php
@@ -129,8 +112,6 @@ $get_record = $subject->getStudyRecords($user_id);
     </div>
   </div>
 </div>
-
-
 </body>
 </html>
 

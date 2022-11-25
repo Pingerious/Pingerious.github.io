@@ -1,5 +1,9 @@
 <?php
-include_once "../classes/user.php";
+session_start();
+include '../classes/user.php';
+
+$user = new User;
+$user_id = $_GET['id'];
 ?>
 
 <!DOCTYPE html>
@@ -16,26 +20,41 @@ include_once "../classes/user.php";
 </head>
 
 <body>
-    <main class="container">
-        <div class="card mx-auto w-50 border border-0">
-            <div class="card-header bg-white border-0">
-                <h1 class="text-center text-uppercase mb-4">Login</h1>
+<div class="container" style="margin-top:1em;">
+    <form action="../actions/password-update.php" method="post">  
+        <div class="card col-6 d-block mx-auto mt-5">
+            <div class="card-header">
+                <h1 class="h4 text-center fw-bold">Change Your Password</h1>
             </div>
             <div class="card-body">
-                <form action="../actions/login.php" method="post">
-                    <input type="text" name="username" class="form-control mb-4" placeholder="USERNAME" required autofocus>
-                    <input type="password" name="password" class="form-control mb-5" placeholder="PASSWORD" required>
-                    <button type="submit" name="login" class="btn btn-danger text-uppercase text-black fw-bold py-2 w-100">Enter</button>
-                </form>
-            </div>
-            <div class="card-footer bg-white border-0">
-                <div class="text-center">
-                        <a href="register.php">Create an Account</a>
+                <div class="row">
+                    <div class="mx-auto">
+                      <label for="current password" class="form-label">Current Password</label>
+                      <input type="password" name="current_password" id="currentPassword" required placeholder="Enter Current Password" class="form-control mb-3">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mx-auto">
+                    <label for="New password" class="form-label">New Password</label>
+                    <input type="password" name="new_password" id="newPassword" required placeholder="Enter new password" class="form-control mb-3">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mx-auto">
+                      <label for="Confirm password" class="form-label">Confirm New Password</label>
+                      <input type="password" name="confirm_new_password" id="confNewPassword" required placeholder="Enter New Password Again" class="form-control mb-3">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mx-auto">
+                      <button type="submit" class="btn btn-primary w-100" name="btn_update">UPDATE</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
-    <?php include "../footer.php"; ?>
+        </div> 
+    </form>
+</div>
+    <?php include "../views/footer.php"; ?>
 </body>
 
 </html>

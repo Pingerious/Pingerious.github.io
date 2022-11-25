@@ -19,27 +19,29 @@ $subject = new Subject;
   <title>Document</title>
 </head>
 <body>
+  <?php
+  include '../views/navbar.php';
+  ?>
   <div class="container">
     <div class="card w-50 mx-auto mt-5">
       <div class="card-header text-center p-3">
-          <h1><span class="text-primary">Hi!  Good to see you!</span><br>  <i class="bi bi-stars text-warning"></i><?=$_SESSION['full_name']?><i class="bi bi-stars text-warning"></i></i></h1>
+          <h1><span class="text-primary">Hi!  Good to see you!</span><br>  <i class="bi bi-stars text-warning"></i><?=$_SESSION['full_name']?><i class="bi bi-stars text-warning"></i></h1>
       </div>
       <div class="card-body">
         <h4 class="text-center text-danger"> What subject are you going to study today? </h4>
         <hr>
-        <form action="../actions/" method="post">
-          <select name="subject" class="d-block mx-auto form-select-lg form-select-box-shadow form-control" onchange="location=this.value;">
+        <form action="../actions/insert_subject.php" method="post">
+          <select name="subject" class="d-block mx-auto form-select-lg form-select-box-shadow form-control">
           <option value="" hidden>SELECT A SUBJECT</option>
         <?php
         $subject_options = $subject->displayAllSubjects();
-        if($subject_options && $subject_options->num_rows > 0){
+        if($subject_options->num_rows > 0){
           while($option = $subject_options->fetch_assoc()){
            echo "<option value ='../actions/insert_subject.php?id=".$option['subject_id']."'>".$option['subject_name']."</option>";
           }
           
         } else{
           echo "<option> No Subjects to display </option>";
-
         }
         ?>
           </select>
@@ -47,18 +49,9 @@ $subject = new Subject;
       </div>
 
         <div class="card-footer ">  
-          <!--use the session variable found in user's class (login). this is to get the record of the student base on their user_id -->
-          <a href="study-record.php?id=<?="$_SESSION[user_id]"?>" class="btn btn-success d-inline-block w-100 fw-bold mx-2 p-2 " name="submit">Go!</a>
+          <a href="study-record.php?id=<?=$_SESSION['user_id']?>" class="btn btn-success d-inline-block w-100 fw-bold mx-2 p-2" name="submit">Go!</a>
         </div>
-
-   
-      <?php
-      if(isset($_POST['submit'])){
-        $this->getSubject();
-      }
-      ?>
     </div>
   </div>
-
 </body>
 </html>

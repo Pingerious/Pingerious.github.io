@@ -32,10 +32,12 @@ include_once "../classes/user.php";
                 <div class="text-center">
                         <a href="register.php">Create an Account</a>
                 </div>
+                <div class="text-center mt-3">
+                        <a href="">Forgot your password?</a>
+                </div>
             </div>
         </div>
     </main>
-    <?php include "../footer.php"; ?>
 </body>
 
 </html>
