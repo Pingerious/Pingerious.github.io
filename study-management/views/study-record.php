@@ -6,7 +6,7 @@ date_default_timezone_set('Asia/Tokyo');
 $subject = new Subject;
  $user_id = $_GET['id'];
 // $subject_list = $subject->getSubject($record_id);
-
+$get_record = $subject->getStudyRecords($user_id);
 
 
 // include 'clock_in.php';
@@ -74,7 +74,6 @@ $subject = new Subject;
                 </thead>  
                 <tbody>
                   <?php 
-                  $get_record = $subject->getStudyRecords($user_id);
                   while($row = $get_record->fetch_assoc()){ ?>
                   
                   <tr>

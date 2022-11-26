@@ -13,13 +13,13 @@ class Subject extends Database{
 
   function insertSingleSubject($subject_id,$user_id) {
     
-    $sql = "INSERT INTO `record` (`subject_id`,`user_id`,`clock_in`) VALUES ($subject_id,$user_id,CURRENT_TIMESTAMP)";
+    $sql = "INSERT INTO `record` (`subject_id`,`user_id`) VALUES ($subject_id,$user_id)";
     if($result = $this->conn->query($sql)){
       echo "<script>alert('Subject Inserted') </script>";
       header("location: ../views/subjects.php");
       return $result;
     } else {
-      die ("Something went wrong ".$this->conn->error);
+      die ("Something went wrong".$this->conn->error);
     }
     
   }
@@ -80,58 +80,59 @@ class Subject extends Database{
 
   function displayWeeklyBestRecord($user_id, $date_from, $date_to) {
     $msg =  "<p class='text-danger'> NO RECORDS FOUND </p>";
-    $sql = "SELECT date(clock_in) as FROM_WEEK, date_sub(date(clock_in), INTERVAL -1 week) as TO_WEEK, max(total) as TOTAL FROM record
-             WHERE clock_in BETWEEN '$date_from' and '$date_to' and `user_id` = $user_id";
-      if($result = $this->conn->query($sql)) {
-        if(mysqli_num_rows($result) == 0) {
-          echo $msg;
-            }
-        }
-        return $result;
+    $sql = " SELECT date(clock_in) as FROM_WEEK, date_sub(date(clock_in), INTERVAL -1 week) as TO_WEEK, max(total) as TOTAL FROM record
+             WHERE clock_in BETWEEN '$date_from' and '$date_to' and `user_id` = $user_id;
+      ";
+    if($result = $this->conn->query($sql)) {
+      if(mysqli_num_rows($result) == 0) {
+        echo $msg;
+      }
+    }
+
+    return $result;
   }
 
   function displayMostStudied($user_id) {
 
-      $sql = "SELECT subjects.subject_name,record.subject_id, SEC_TO_TIME(sum(record.total)) AS value_occurrence, SEC_TO_TIME(sum(record.total)) as TOTAL FROM record 
-        JOIN subjects  
-        ON record.subject_id = subjects.subject_id
-        GROUP BY record.subject_id
-        HAVING value_occurrence >= ALL(
-        SELECT SEC_TO_TIME(sum(record.total))
-        FROM record
-        WHERE record.user_id = $user_id
-        GROUP BY record.subject_id
-      );";
+    $sql = " SELECT record.subject_id, subjects.subject_name, SEC_TO_TIME(sum(record.total)) as TOTAL FROM record JOIN
+            (SELECT subject_id, ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC) seq
+            FROM record
+            GROUP BY record.subject_id) value_occurence
+            ON record.subject_id= value_occurence.subject_id
+            JOIN subjects
+            ON record.subject_id = subjects.subject_id
+            WHERE value_occurence.seq = 1 and record.user_id = $user_id LIMIT 1";
     $result = $this->conn->query($sql);
     return $result;
 
   }
 
   function displayLeastStudied($user_id) {
-        $sql = "SELECT subjects.subject_name,record.subject_id, SEC_TO_TIME(sum(record.total)) AS value_occurrence, SEC_TO_TIME(sum(record.total)) as TOTAL FROM record 
-                JOIN subjects  
-                ON record.subject_id = subjects.subject_id
-                GROUP BY record.subject_id
-                HAVING value_occurrence <= ALL(
-                SELECT SEC_TO_TIME(sum(record.total))
-                FROM record
-                WHERE record.user_id = $user_id
-                GROUP BY record.subject_id
-              );";
+    $sql = "SELECT subjects.subject_name,record.subject_id, COUNT(record.subject_id) AS value_occurrence, SEC_TO_TIME(sum(record.total)) as TOTAL FROM record 
+            JOIN subjects  
+            ON record.subject_id = subjects.subject_id
+            GROUP BY record.subject_id
+            HAVING COUNT(value_occurrence) <= ALL(
+            SELECT COUNT(record.subject_id)
+            FROM record
+            WHERE record.user_id = $user_id
+            GROUP BY record.subject_id
+          );";
     $result = $this->conn->query($sql);
     return $result;
   }
 
 
   function getStudyRecords($user_id) {
-    $msg =  "<p class='text-danger fw-bold text-center'> NO RECORDS FOUND </p>";
-    $sql = "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, total, r.note,r.record_id FROM record r INNER JOIN subjects s ON r.subject_id = s.subject_id INNER JOIN users u ON r.user_id = u.user_id WHERE DATE(r.clock_in) = DATE(CURRENT_DATE) and u.user_id = $user_id";
+    $sql = "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, total, r.note,r.record_id FROM record r INNER JOIN subjects s ON r.subject_id = s.subject_id INNER JOIN users u ON r.user_id = u.user_id WHERE u.user_id = $user_id";
   
     if($result = $this->conn->query($sql)) {
-      if(mysqli_num_rows($result) == 0) {
-        echo "$msg";
-          }
+      if ($result -> num_rows > 0) {
+       return $result;
       }
-      return $result;
+    }
+    else {
+      echo "<p class='text-danger fw-bold text-center'>No records Found!</p>";
+    }
   }
 }
