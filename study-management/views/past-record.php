@@ -75,7 +75,7 @@ $subject = new Subject;
       <div class="card-body h4">
         <div class="row">
           <div class="col-6 fw-bold">
-            <form method="post" class="form-group">
+            <form method="post" class="form-group" id="form_submit">
                 <label for="date_from" class="form-label small">Select a Day </label>
                 <input type="date" name="date_from" id="date_from" class="form-control d-inline-block w-75">
       
@@ -106,7 +106,7 @@ $subject = new Subject;
       <div class="card-body  h3">
           <div class="row">
             <div class="col-6">
-              <form method="post" class="form-group">
+              <form method="post" class="form-group" id="form_submit">
                   <label for="date_from" class="form-label small">Select Starting Week </label>
                   <input type="date" name="date_from" id="date_from" class="form-control  ">
                   <label for="date_to" class="form-label small mt-2">Select Ending Week </label>
@@ -122,11 +122,11 @@ $subject = new Subject;
                     $date_from = $_POST["date_from"]; 
                     $date_to = $_POST["date_to"]; 
                   
-                    $display_best_record = $subject ->displayWeeklyBestRecord($user_id,$date_from,$date_to);
-                    while($row = $display_best_record ->fetch_assoc()) {
+                    $display_weekly_best_record = $subject ->displayWeeklyBestRecord($user_id,$date_from,$date_to);
+                    while($row = $display_weekly_best_record ->fetch_assoc()) {
                       echo "<p class='h5 my-3'>Starting Week <span class='float-end fw-bold'>".$row['FROM_WEEK']."</span></p>";
                       echo "<p class='h5 my-3'>Week Ending <span class='float-end fw-bold'>".$row['TO_WEEK']." </p>";
-                      echo "<p class='h5'>Week Total <span class='float-end fw-bold'>".$row['TOTAL']." </p>";
+                      echo "<p class='h5'>Total Hours <span class='float-end fw-bold'>".$row['TOTAL']." </p>";
                     }  
                   } 
             ?>
@@ -151,7 +151,7 @@ $subject = new Subject;
       <div class="card-body fw-bold text-center h3">
         <div class="row">
           <div class="col-6">
-            <p>subject</p>
+            <p class="text-capitalize">subject</p>
             <?php $most_hours_studied = $subject->displayMostStudied($user_id); 
                   while($row = $most_hours_studied->fetch_assoc()) {
                     echo $row['subject_name'];
@@ -159,7 +159,7 @@ $subject = new Subject;
             ?>
           </div>
           <div class="col-6">
-            <p>hours</p>
+            <p class="text-capitalize">hours</p>
             <?php $most_hours_studied = $subject->displayMostStudied($user_id); 
                   while($row = $most_hours_studied->fetch_assoc()) {
                     echo $row['TOTAL'];
@@ -176,7 +176,7 @@ $subject = new Subject;
       <div class="card-body fw-bold text-center h3">
         <div class="row">
           <div class="col-6">
-            <p>subject</p>
+            <p class="text-capitalize">subject</p>
             <?php $least_hours_studied = $subject->displayLeastStudied($user_id); 
                   while($row = $least_hours_studied->fetch_assoc()) {
                     echo "<p class='d-block'>".$row['subject_name']."</p>";
@@ -184,7 +184,7 @@ $subject = new Subject;
             ?>
           </div>
           <div class="col-6">
-            <p>hours</p>
+            <p class="text-capitalize">hours</p>
             <?php $least_hours_studied = $subject->displayLeastStudied($user_id); 
                   while($row = $least_hours_studied->fetch_assoc()) {
                     echo "<p class='d-block'>".$row['TOTAL']."</p>";
@@ -242,7 +242,14 @@ $subject = new Subject;
   
 
 
+<script>
+  var myForm = document.getElementById('form_submit');
 
+  function handleForm(event) {
+    event.preventDefault();
+  }
+  myForm.addEventListener('submt',handleForm);
+</script>
 
 
   
