@@ -11,8 +11,4 @@ class Record extends Database{
       die ("Error " .$this->conn->error);
     }
   } 
-
-  public function displayMostStudiedSubject(){
-   
-  }
 }

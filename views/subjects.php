@@ -2,8 +2,8 @@
 session_start();
 include '../classes/subject.php';
 
-$subject = new Subject; 
 
+$subject = new Subject; 
 ?>
 
 <!DOCTYPE html>
@@ -37,20 +37,20 @@ $subject = new Subject;
         $subject_options = $subject->displayAllSubjects();
         if($subject_options->num_rows > 0){
           while($option = $subject_options->fetch_assoc()){
-           echo "<option value ='../actions/insert_subject.php?id=".$option['subject_id']."'>".$option['subject_name']."</option>";
+           echo "<option value ='".$option['subject_id']."'>".$option['subject_name']."</option>";
           }
           
         } else{
           echo "<option> No Subjects to display </option>";
         }
         ?>
-          </select>
-        </form>  
+          </select>  
       </div>
-
-        <div class="card-footer ">  
-          <a href="study-record.php?id=<?=$_SESSION['user_id']?>" class="btn btn-success d-inline-block w-100 fw-bold mx-2 p-2" name="submit">Go!</a>
-        </div>
+      <div class="card-footer">
+        <!-- <a href="..?views/study-record.php" role="button" ></a> -->
+         <button type="submit" class="btn btn-primary d-inline-block w-100 fw-bold mx-2 p-2">Let's Start Studying!</button>
+         </form> 
+      </div>
     </div>
   </div>
 </body>

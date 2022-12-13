@@ -4,12 +4,14 @@ include_once "../classes/subject.php";
 date_default_timezone_set('Asia/Tokyo');
 
 $subject = new Subject;
-$user_id = $_GET['id'];
+$user_id = $_SESSION['user_id'];
 $date_today = date("Y-m-d");
-$get_record = $subject->getStudyRecords($user_id,$date_today);
+$get_record = $subject->getStudyRecords($user_id);
 $total_hours = $subject->getTodayTotal($user_id);
-// print_r($total_hours);
 
+// $user = new User;（２つめのinstantiateはできる？）
+// $daily_goal = $user->displayDailyGoal($user_id);
+// $weekly_goal = $user->displayWeeklyGoal($user_id);
 
 ?>
 
@@ -34,35 +36,41 @@ $total_hours = $subject->getTodayTotal($user_id);
     </div>
 </header>
 <body>
- <div class="row">
-   <div class="ms-5 mt-3 col-3">
-     <div class="card">
-       <div class="card-header">
-         <h1 class="h3 text-center">Current Time</h1>
-       </div>
-       <div class="card-body fw-bold text-center h5">
-          <?= date_default_timezone_set ('Asia/Tokyo');
-            echo date('Y-m-d')."<br/>\n";
-            echo date('H:i:s')."<br/>\n";
-          ?>
-       </div>
-     </div>
-   </div>
-   <div class="col-3">
-     <div class="card mt-3">
-       <div class="card-header">
-         <h1 class="h4 text-center">Today's Effort</h1>
-       </div>
-       <div class="card-body fw-bold text-center h3">
-       <?= gmdate('H \h i \m s \s', $total_hours['total']); ?>
-       </div>
-     </div>
-   </div>
+  <div class="row ms-3 mt-3">
+    <div class="col-3">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="h4 text-center">Today's Effort</h1>
+        </div>
+        <div class="card-body fw-bold text-center h3">
+        <?= gmdate('H \h i \m s \s', $total_hours['total']); ?>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="h4 text-center">Daily Goal</h1>
+        </div>
+        <div class="card-body fw-bold text-center h3">
+        <?= gmdate('H \h i \m s \s', $total_hours['total']); ?>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="h4 text-center">Weekly Goal</h1>
+          <?= $weekly_goal?>
+        </div>
+        <div class="card-body fw-bold text-center h3">
+        <?= gmdate('H \h i \m s \s', $total_hours['total']); ?>
+        </div>
+      </div>
+    </div>
+  </div> 
 
-  </div>
-</div> 
-
-  <div class="row ms-3 mt-3 me-3">
+   <div class="row ms-3 mt-3 me-3">
     <div class="col-12">
       <div class="card">
         <div class="card-header">
@@ -77,14 +85,11 @@ $total_hours = $subject->getTodayTotal($user_id);
                   <th>Time In</th>
                   <th>Time Out</th>
                   <th>Total Study Hours</th>
-                  <th>Clock In</th>
                   <th>Clock Out</th>
                 </tr>
               </thead>  
               <tbody>
-                <tr>
-                  <td><?php echo date("Y-m-d");?></td>
-                </tr>
+                
                 <?php 
                 while($row = $get_record->fetch_assoc()){ ?>
                 
@@ -95,11 +100,7 @@ $total_hours = $subject->getTodayTotal($user_id);
                   <td><?= $row['clock_out']; ?></td>
                   <td><?= gmdate('H \h i \m s \s', $row['total']); ?></td> 
                   <td>
-                    <a href="../actions/update_timeStampIn.php?id=<?= $row['record_id'];?>" name ="clock_in" class="btn btn-success"><i class="bi bi-stopwatch"></i> Clock In</a>
-                  </td>
-                  
-                  <td>
-                  <a href="../actions/update_timeStampOut.php?id=<?= $row['record_id'];?>" name ="clock_in" class="btn btn-danger"><i class="bi bi-stopwatch"></i> Clock Out</a>
+                  <a href="../actions/update_timeStampOut.php?id=<?= $row['record_id'];?>" name ="clock_in" class="btn btn-info" id="clock_out"><i class="bi bi-stopwatch"></i> Clock Out</a>
                   </td>
                 </tr>
                 <?php

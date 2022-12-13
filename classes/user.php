@@ -73,7 +73,7 @@ class User extends Database{
         $sql = "UPDATE users SET first_name = '$first_name', last_name = '$last_name', username = '$username' WHERE `user_id` = $user_id";
 
         if($this->conn->query($sql)){
-            header("location: ../views/dashboard.php");
+            header("location: ../views/study-record.php");
             exit;
         } else {
             die("Error updating user: " . $this->conn->error);
@@ -108,29 +108,9 @@ class User extends Database{
             die("Error uploading photo: " . $this->conn->error);
         }
     }
-
-    // function changePassword($new_passw, $conf_new, $user_id){//sqlの位置が違う
-    //   $sql = "UPDATE users SET `password` = $new_passw WHERE user_id = $user_id";
-    //         if($new_passw ==$conf_new){
-    //             $new_passw = password_hash($new_passw, PASSWORD_DEFAULT);
-    //                 if($this->conn->query($sql)){
-    //                     echo "<script> alert('Successfully changed your password')</script>";
-    //                     header("location: ../views/profile.php");
-    //                     exit;
-    //                 } else {
-    //                     die("Error updating password: " . $this->conn->error);
-    //                 }
-    //         } else {
-    //             echo "<div class='mt-3 text-center fw-bold alert alert-danger' role='alert'>New Password and Confirm Password do not match. </div>";
-    //         } 
-    //     }
+    
 
         function changePassword($user_id,$current_passw, $db_passw,$new_passw,$conf_new){
-            // $current_passw = $_POST['current_password'];
-            // $db_passw = getPassword($user_id);
-            // $new_passw = $_POST['new_password'];
-            // $conf_new = $_POST['confirm_new_password'];
-        
             if (password_verify($current_passw, $db_passw)) {
                 if ($new_passw === $conf_new) {
                     if($current_passw != $new_passw){
@@ -165,15 +145,38 @@ class User extends Database{
             }
         }
     
-    
-    // function getPassword($user_id) {
-    //     $sql = "SELECT `password` FROM user WHERE user_id = $user_id";
-    
-    //     if($result = $this->conn->query($sql)) {
-    //         $row = $result->fetch_assoc();
-    //         return $row['password'];
-    //     }
-    // }
+        function insertGoals($user_id, $daily_goal, $weekly_goal){
+        
+            $sql = "UPDATE `users` SET `daily_goal`= $daily_goal,`weekly_goal` = $weekly_goal WHERE user_id = $user_id";
 
+            if($this->conn->query($sql)){
+                header("location: ../views/study-record.php");
+                exit;
+            } else {
+                die("Error setting the daily goal: " . $this->conn->error);
+            }
+        }
+
+        function displayDailyGoal($user_id){
+            $sql = "SELECT `daily_goal` FROM `users` WHERE user_id = $user_id";
+
+                if($result = $this->conn->query($sql)) {
+                $row = $result->fetch_assoc();
+                return $row['daily_goal'];
+            } else{
+                echo "Set your goals from your profile";
+            }
+        }
+
+        function displayWeeklyGoal($user_id){
+            $sql = "SELECT `weekly_goal` FROM `users` WHERE user_id = $user_id";
+
+                if($result = $this->conn->query($sql)) {
+                $row = $result->fetch_assoc();
+                return $row['weekly_goal'];
+            }
+        }
+    
+   
 
 }

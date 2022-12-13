@@ -47,7 +47,27 @@ $user_details = $user->getUser($_SESSION['user_id']);
         </div>
         <div>
           <a href="../views/password-update.php?id=<?=$_SESSION['user_id']?>" class="text-center d-block mb-3">Change your Password?</a>
+          <a href="../views/set_goals.php?id=<?=$_SESSION['user_id']?>" class="text-center d-block mb-3">Set (Update) your Goal</a>
+
+
         </div>
   </main>
   </body>
 </html>
+
+
+<!-- <div class="col-2 ms-3">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="h4 text-center">Today's Goal</h1>
+        </div>
+        <form action="" method ="post">
+          <div class="card-body fw-bold text-center h3">
+            <label for ="set_daily_goal"></label>
+              <input type = "number" name="daily_goal" class="form-control mt-3">
+              <button type= "submit" class="btn btn-warning mt-3 h4" name="set_daily_goal">Set Daily Goal</button>
+          </div>    
+        </form>
+      </div>
+    </div>
+  </div>  -->
