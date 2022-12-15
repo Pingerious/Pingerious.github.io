@@ -1,5 +1,5 @@
 <?php
-require 'database.php';
+require_once 'database.php';
 
 class User extends Database{
   public function register($first_name, $last_name, $username, $password, $avatar, $grade){
@@ -158,7 +158,7 @@ class User extends Database{
         }
 
         function displayDailyGoal($user_id){
-            $sql = "SELECT `daily_goal` FROM `users` WHERE user_id = $user_id";
+            $sql = "SELECT SEC_TO_TIME(`daily_goal` * 3600) as daily_goal FROM `users` WHERE user_id = $user_id";
 
                 if($result = $this->conn->query($sql)) {
                 $row = $result->fetch_assoc();
@@ -169,7 +169,7 @@ class User extends Database{
         }
 
         function displayWeeklyGoal($user_id){
-            $sql = "SELECT `weekly_goal` FROM `users` WHERE user_id = $user_id";
+            $sql = "SELECT SEC_TO_TIME(`weekly_goal` * 3600) as weekly_goal FROM `users` WHERE user_id = $user_id";
 
                 if($result = $this->conn->query($sql)) {
                 $row = $result->fetch_assoc();

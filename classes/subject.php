@@ -1,5 +1,5 @@
 <?php
-require "database.php";
+require_once "database.php";
 
 class Subject extends Database{
   public function displayAllSubjects(){
@@ -11,14 +11,15 @@ class Subject extends Database{
     }
   }
 
+
   function insertSingleSubject($subject_id,$user_id) {
     
-    $sql = "INSERT INTO `record` (`subject_id`,`user_id`,`clock_in`) VALUES ($subject_id,$user_id, CURRENT_TIMESTAMP)";
-    if($this->conn->query($sql)){
-      header("location: ../views/study-record.php");
-      exit;
+    $sql = "INSERT INTO `record` (`subject_id`,`user_id`,`clock_in`) VALUES ($subject_id,$user_id,CURRENT_TIMESTAMP)";
+    if($result = $this->conn->query($sql)){
+      header("location: ../views/subjects.php");
+      return $result;
     } else {
-      die ("Something went wrong".$this->conn->error);
+      die ("Something went wrong ".$this->conn->error);
     }
     
   }
@@ -38,8 +39,8 @@ class Subject extends Database{
     $sql = "UPDATE `record` SET clock_out = '$stamp_out' WHERE `record_id` = $id";
 
     if($result = $this->conn->query($sql)) {
-      return $result;
-      
+    
+      return $result; 
     }
     else {
       die("Something went wrong ".$this->conn->error);
@@ -59,19 +60,19 @@ class Subject extends Database{
     $result = $this->conn->query($sql_display_time);
     return $result;
   }
-
+  
   function displayDailyRecord($user_id,$date) {
-    $msg =  "<p class='text-danger'> NO RECORDS FOUND </p>";
-    $sql = "SELECT SEC_TO_TIME(SUM(total)) AS TOTAL FROM record WHERE clock_in LIKE '$date%' AND  user_id = $user_id";
+    $sql = "SELECT SEC_TO_TIME(SUM(total)) AS TOTAL,
+              CASE 
+                WHEN SEC_TO_TIME(SUM(total)) is NULL THEN 'NO RECORDS FOUND'
+                WHEN SEC_TO_TIME(SUM(total)) is NOT NULL THEN DATE(`clock_in`)
+              END as date_in
+              FROM record WHERE clock_in LIKE '$date%' AND  user_id = $user_id";
     // $sql = "SELECT DATE(clock_in) as date_in, SEC_TO_TIME(max(total)) as max
     // FROM record WHERE user_id = $user_id and DATE(clock_in) = '$date' GROUP by date_in";
     if($result = $this->conn->query($sql)) {
-      if(mysqli_num_rows($result) == 0) {
-        echo $msg;
-      }
+      return $result;
     }
-    return $result;
-     
   }
 
   function displayWeeklyRecord($user_id, $date_from) {
@@ -116,13 +117,11 @@ class Subject extends Database{
 
 
   function getStudyRecords($user_id) {
-    $is_clicked = false;
-    $date_today = date('Y-m-d');
-    $sql = "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, total,r.record_id FROM record r INNER JOIN subjects s ON r.subject_id = s.subject_id INNER JOIN users u ON r.user_id = u.user_id WHERE u.user_id = $user_id AND r.clock_in LIKE '$date_today%'";
+    $sql = "SELECT s.subject_id, s.subject_name, r.clock_in, r.clock_out, r.total,r.record_id, r.toggler FROM record r INNER JOIN subjects s ON r.subject_id = s.subject_id INNER JOIN users u ON r.user_id = u.user_id WHERE u.user_id = $user_id AND DATE(r.clock_in) = CURRENT_DATE";
   
     if($result = $this->conn->query($sql)) {
       if ($result -> num_rows > 0) {
-       return $result;
+        return $result;
       }
     }
     else {
