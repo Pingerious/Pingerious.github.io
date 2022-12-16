@@ -1,17 +1,18 @@
 <?php
 session_start();
+include_once "../classes/user.php";
 include_once "../classes/subject.php";
 date_default_timezone_set('Asia/Tokyo');
 
 $subject = new Subject;
+$user = new User;
 $user_id = $_SESSION['user_id'];
 $date_today = date("Y-m-d");
+
 $get_record = $subject->getStudyRecords($user_id);
 $total_hours = $subject->getTodayTotal($user_id);
-
-// $user = new User;（２つめのinstantiateはできる？）
-// $daily_goal = $user->displayDailyGoal($user_id);
-// $weekly_goal = $user->displayWeeklyGoal($user_id);
+$daily_goal = $user->displayDailyGoal($user_id);
+$weekly_goal = $user->displayWeeklyGoal($user_id);
 
 ?>
 
@@ -53,7 +54,7 @@ $total_hours = $subject->getTodayTotal($user_id);
           <h1 class="h4 text-center">Daily Goal</h1>
         </div>
         <div class="card-body fw-bold text-center h3">
-        <?= gmdate('H \h i \m s \s', $total_hours['total']); ?>
+        <?= $daily_goal; ?>
         </div>
       </div>
     </div>
@@ -61,10 +62,9 @@ $total_hours = $subject->getTodayTotal($user_id);
       <div class="card">
         <div class="card-header">
           <h1 class="h4 text-center">Weekly Goal</h1>
-          <?= $weekly_goal?>
         </div>
         <div class="card-body fw-bold text-center h3">
-        <?= gmdate('H \h i \m s \s', $total_hours['total']); ?>
+        <?= $weekly_goal; ?>
         </div>
       </div>
     </div>
@@ -92,7 +92,8 @@ $total_hours = $subject->getTodayTotal($user_id);
                 
                 <?php 
                 while($row = $get_record->fetch_assoc()){ ?>
-                
+                <form action="" method="post">
+                <input type="hidden" name="record_id" value="<?=$row['record_id'];?>">
                 <tr>
                   <td><?= $row['subject_id']; ?></td>
                   <td><?= $row['subject_name']; ?></td>
@@ -100,12 +101,23 @@ $total_hours = $subject->getTodayTotal($user_id);
                   <td><?= $row['clock_out']; ?></td>
                   <td><?= gmdate('H \h i \m s \s', $row['total']); ?></td> 
                   <td>
-                  <a href="../actions/update_timeStampOut.php?id=<?= $row['record_id'];?>" name ="clock_in" class="btn btn-info" id="clock_out"><i class="bi bi-stopwatch"></i> Clock Out</a>
+                  <?php
+
+                    if($row['toggler'] == 1) {?>
+                      <a href="../actions/update_timeStampOut.php?id=<?= $row['record_id'];?>" name ="clock_in" class="btn btn-info disabled" id="clock_out"><i class="bi bi-stopwatch"></i> Clock Out</a>
+                   <?php }
+                   else { ?>
+                      <a href="../actions/update_timeStampOut.php?id=<?= $row['record_id'];?>" name ="clock_in" class="btn btn-info" id="clock_out"><i class="bi bi-stopwatch"></i> Clock Out</a>
+                  <?php }
+                  ?>
+             
+                  
                   </td>
                 </tr>
                 <?php
                   } 
                 ?>
+                </form>
               </tbody>  
             </table>
           </div>  

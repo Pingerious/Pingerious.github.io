@@ -67,19 +67,15 @@ $subject = new Subject;
             </div>
             <div class="col-6">
               <p class="fw-bold">Result</p>
-            <?php 
-                    if(isset($_POST["search"])) {
-                      $date = $_POST["date"]; 
-                      if($date ==""){
-                        echo "Select a day";
-                      } else {
-                        
-                        $display_daily_record = $subject ->displayDailyRecord($user_id,$date);
-                      while($row = $display_daily_record ->fetch_assoc()) {
-                      echo "<p class='small'>". $date." | ".$row['TOTAL']."</p>";
-                      }
-                      } 
-                    } 
+              <?php 
+                  if(isset($_POST["search"])) {
+                    $date = $_POST["date"]; 
+                  
+                    $display_best_record = $subject ->displayDailyRecord($user_id,$date);
+                    while($row = $display_best_record ->fetch_assoc()) {
+                     echo "<p class='small'>". $row['date_in']." ".$row['TOTAL']."</p>";
+                    }  
+                  } 
             ?>
             </div>
           </div>

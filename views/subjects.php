@@ -1,9 +1,10 @@
 <?php
 session_start();
 include '../classes/subject.php';
-
+include_once '../classes/user.php';
 
 $subject = new Subject; 
+$user = new User;
 ?>
 
 <!DOCTYPE html>
@@ -30,26 +31,25 @@ $subject = new Subject;
       <div class="card-body">
         <h4 class="text-center text-danger"> What subject are you going to study today? </h4>
         <hr>
-        <form action="../actions/insert_subject.php" method="post">
-          <select name="subject" class="d-block mx-auto form-select-lg form-select-box-shadow form-control">
-          <option value="" hidden>SELECT A SUBJECT</option>
+        <form action="../actions/" method="post">
+          <select name="subject" class="d-block mx-auto form-select-lg form-select-box-shadow form-control" onchange="location=this.value;">
         <?php
         $subject_options = $subject->displayAllSubjects();
-        if($subject_options->num_rows > 0){
+        if($subject_options && $subject_options->num_rows > 0){
           while($option = $subject_options->fetch_assoc()){
-           echo "<option value ='".$option['subject_id']."'>".$option['subject_name']."</option>";
+           echo "<option value ='../actions/insert_subject.php?subject_id=".$option['subject_id']."'>".$option['subject_name']."</option>";
           }
           
         } else{
           echo "<option> No Subjects to display </option>";
+
         }
         ?>
-          </select>  
+          </select>
+        </form> 
       </div>
       <div class="card-footer">
-        <!-- <a href="..?views/study-record.php" role="button" ></a> -->
-         <button type="submit" class="btn btn-primary d-inline-block w-100 fw-bold mx-2 p-2">Let's Start Studying!</button>
-         </form> 
+      <a href="study-record.php?id=<?="$_SESSION[user_id]"?>" class="btn btn-success d-inline-block w-100 fw-bold mx-2 p-2 " name="submit">Let's Start Studying!</a>
       </div>
     </div>
   </div>
